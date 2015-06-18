@@ -74,12 +74,12 @@
 								   	<?php 
 								   	 if($record->photo) 
 								   	 { ?>
-											<img alt="" src='<?php echo site_url('bonfire/images/doctor_images').'/'.$record->photo?>' class="img-responsive" style="height: 100px;width: 100px;border-radius: 10px;" /> 
+											<img class="doctor_img" src='<?php echo site_url('bonfire/images/doctor_images').'/'.$record->photo?>' class="img-responsive"/> 
 									   	   	<?php 
 								   	 }
 									 else
 									 { ?>
-								 		<img src="<?php echo Template::theme_url('images/default_user.png'); ?>" style="height: 100px;width: 100px;border-radius: 10px;"/>
+								 		<img class="doctor_img" src="<?php echo Template::theme_url('images/default_user.png'); ?>" />
 								 		<?php } ?>
 									</div>
 									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
