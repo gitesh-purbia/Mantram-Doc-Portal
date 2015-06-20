@@ -152,7 +152,8 @@ class Search extends Front_Controller
 			foreach($clinic_record as $clinic)
 			{
 				$clinic_time = $this->search_model->get_clinic_time_by_clinicid($clinic->clinicid);
-				$clinic_time_arr[$clinic->clinicid] = $clinic_time;
+				$clinic_time_sorted = $this->byDaySort($clinic_time);
+				$clinic_time_arr[$clinic->clinicid] = $clinic_time_sorted;
 			}
 			Template::set('doctor_record',$doctor_record);
 			Template::set('clinic_record',$clinic_record);
@@ -166,6 +167,17 @@ class Search extends Front_Controller
 		}
 		
 		Template::render();
+	}
+	
+	public function byDaySort($array)
+	{
+	    $dayNo = date('N') - 1;
+	    if($dayNo == 0)
+	        return $array;
+	    elseif($dayNo == 5)
+	        return array_reverse($array);
+	    else
+	        return array_merge(array_slice($array, $dayNo), array_slice($array, 0, $dayNo));
 	}
 	
 	#===============================================================================================================

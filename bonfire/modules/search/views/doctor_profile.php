@@ -1,31 +1,3 @@
- <style>
- 	.map-tool
-{
-	font-size: 15px;
-	color: #107FC9;
-	text-align: center;
-}
-.timingtable-width
-{
-	width:100%;
-	border:solid 1px #AAAAAA;
-}
-.timingtable th
-{
-	background-color: #107FC9;
-	color: white;
-	padding: 8px;
-	border:solid 1px #AAAAAA;
-}
-.timingtable td
-{
-	padding:8px;
-	border:solid 1px #AAAAAA;
-	background-color: #F1F1F1;
-	word-spacing: 50px;
-}
- </style>
- 
  <section class="complete-content content-footer-space">
        <div class="about-intro-wrap pull-left">
        <div class="bread-crumb-wrap ibc-wrap-5">
@@ -195,53 +167,57 @@
 						     	     	</tr>
 						     	     <?php if($time_slots): ?>
 						     		<?php
-										foreach($time_slots[$clinic->clinicid] as $slot):
-					       					$day=(date('l'));
-											if(ucfirst($slot->day)==$day)
-											{ ?>
-												<tr>
-													<td valign="top" class="doc-name-class"><?php echo $slot->day; ?></td>
-													<td>	
-													<?php
-												   		if($slot->time_from && $slot->time_to && $slot->day)
-													   	{
-													   		$timeslots = array();
-															$from = $slot->time_from;
-													   	    $t1_n = date('H:i',strtotime($from));
-														    $t2_n = date('H:i',strtotime($slot->time_to));
-															$t1 = strtotime($t1_n);
-													   		$t2 = strtotime($t2_n);
-															$counter = 1;
-														 	while($t1 < $t2)
-														 	{
-														 		if($counter == 1)
-																{
-																	$t1 = $t1;
-																	$timeslots[] = date('H:i',$t1);
-																}
-																else 
-																{
-														 			$t1 = strtotime('+15 minute',$t1);
-																	$timeslots[] = date('H:i',$t1);
-																	if($t2 == strtotime('+15 minute', $t1))
-																	{
-																		break;
-																	}
-																}
-																$counter = $counter +1;
-														 	}
-															echo '<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">';
-															foreach($timeslots as $timing)
+										foreach($time_slots[$clinic->clinicid]  as $key => $slot):
+											if($slot->time_from && $slot->time_to)
+											{ 
+											?>
+											<tr>
+												<td  class="day_title">
+													<?php 
+													$slot_date = date('d-m-Y', mktime(0, 0, 0, date('m'), date('d') + $key, date('Y')));
+													if($slot_date == date('d-m-Y'))
+													{
+														echo '<div class="timingtable_today">Today</div>';
+													}
+													echo ucfirst($slot->day).'<br>';
+													echo $slot_date;
+													 
+													?>
+												</td>
+												<td class="all_apointment_time">	
+												<?php
+											   		$timeslots = array();
+													$from = $slot->time_from;
+											   	    $t1_n = date('H:i',strtotime($from));
+												    $t2_n = date('H:i',strtotime($slot->time_to));
+													$t1 = strtotime($t1_n);
+											   		$t2 = strtotime($t2_n);
+													$counter = 1;
+												 	while($t1 < $t2)
+												 	{
+												 		if($counter == 1)
+														{
+															$t1 = $t1;
+															$timeslots[] = date('H:i',$t1);
+														}
+														else 
+														{
+												 			$t1 = strtotime('+15 minute',$t1);
+															$timeslots[] = date('H:i',$t1);
+															if($t2 == strtotime('+15 minute', $t1))
 															{
-																echo $timing.' ';
+																break;
 															}
-															echo '</div>';
-													   	}
-												   ?>
-												   </td>
-											   </tr>
-											   <?php
-											}
+														}
+														$counter = $counter +1;
+												 	}
+													foreach($timeslots as $timing) { ?>
+														<a href="<?php echo site_url('appointments/book/').'?timeslots='.$timing.'&clinicid='.$clinic->clinicid.'&doctor_id='.$doctor_record[0]->doctorid.'&date='.$slot_date;?>"><?php echo $timing ?></a>
+													<?php } ?>
+											   </td>
+										   </tr>
+										   <?php
+										   }
 									      endforeach;endif;	
 									      ?>
 						     	     </table>

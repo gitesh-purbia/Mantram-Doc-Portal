@@ -7175,7 +7175,7 @@ a:hover, a:active, a:focus {
 	float: left;
 	background: #fff;
 	padding: 30px 25px 15px 25px;
-	border: 1px solid #e6e7e8;
+	border: 1px solid #e6e7e8 !important;
 	border-top: none
 }
 .appt-form select {
@@ -11114,7 +11114,7 @@ input[type="date"] {
 	float: left;
 	width: 100%;
 	margin-bottom: 384px;
-	background: #fff;
+	background:#F1F1F1;
 	overflow-y: hidden;
 	height: 100%
 }

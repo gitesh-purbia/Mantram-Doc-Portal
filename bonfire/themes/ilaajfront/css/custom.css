@@ -226,3 +226,74 @@ a, a:visited {
 	color: white;
 	background-color:#107FC9;
 }
+ 	.map-tool
+{
+	font-size: 15px;
+	color: #107FC9;
+	text-align: center;
+}
+.timingtable-width
+{
+	width:100%;
+	border:solid 1px #AAAAAA;
+}
+.timingtable th
+{
+	background-color: #107FC9;
+	color: white;
+	padding: 8px;
+	border:solid 1px #AAAAAA;
+}
+.timingtable td
+{
+	padding:8px;
+	border:solid 1px #AAAAAA;
+	background-color: #F1F1F1;
+	word-spacing: 50px;
+}
+.timingtable_today
+{
+	width:80px;
+	background-color: #107FC9;
+	color:#FFFEEF;
+	border-radius: 5px;
+}
+.all_apointment_time a
+{
+	color: #000000;
+	
+}
+
+.all_apointment_time a:hover
+{
+	display:inline;
+	color:#FFFFFF;
+	border-radius: 2px;
+}
+.services-content-wrap
+{
+	background-color: #fff;
+}
+.top-info-contact a
+{
+	color: #333;
+}
+.doctor_img
+{
+	height: 100px;width: 100px;border-radius: 10px;
+}
+.day_title
+{
+	top:0px;
+	bottom: 0px;
+	font-size:13px;
+	color: #107FC9;
+	text-align: center;
+}
+.appointment_datetime
+{
+	float: right;
+	padding: 8px;
+	font-size: 14px;
+}
+
