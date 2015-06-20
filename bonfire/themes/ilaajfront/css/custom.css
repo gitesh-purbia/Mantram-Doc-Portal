@@ -251,6 +251,13 @@ a, a:visited {
 	background-color: #F1F1F1;
 	word-spacing: 50px;
 }
+.timingtable_today
+{
+	width:80px;
+	background-color: #107FC9;
+	color:#FFFEEF;
+	border-radius: 5px;
+}
 .all_apointment_time a
 {
 	color: #000000;
@@ -289,3 +296,4 @@ a, a:visited {
 	padding: 8px;
 	font-size: 14px;
 }
+
