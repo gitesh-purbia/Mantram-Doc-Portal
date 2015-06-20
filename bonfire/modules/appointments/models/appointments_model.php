@@ -24,7 +24,7 @@ Class Appointments_model extends BF_Model
 	public function get_clinic_details($clinicid)
 	{
 		$clinic_query="select c.name,c.address_line1 as address,c.latitude,c.longitude,
-				       co.name as country,st.name as state,city.name as state,
+				       co.name as country,st.name as state,city.name as city,
 					   group_concat(ci.image,'') images 
 				       from bf_clinics c 
 				       inner join bf_clinic_images ci on ci.clinic_id=c.id

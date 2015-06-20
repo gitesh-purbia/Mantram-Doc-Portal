@@ -167,18 +167,21 @@
 						     	     	</tr>
 						     	     <?php if($time_slots): ?>
 						     		<?php
-						     		    $currentdate=date('d');
 										foreach($time_slots[$clinic->clinicid]  as $key => $slot):
-					       					$day=(date('l'));
 											if($slot->time_from && $slot->time_to)
 											{ 
 											?>
 											<tr>
 												<td  class="day_title">
-													<?php echo ucfirst($slot->day); ?>
 													<?php 
-													  $slot_date=$currentdate + $key.'-'.date('m-Y');
-													  echo $slot_date;
+													$slot_date = date('d-m-Y', mktime(0, 0, 0, date('m'), date('d') + $key, date('Y')));
+													if($slot_date == date('d-m-Y'))
+													{
+														echo '<div class="timingtable_today">Today</div>';
+													}
+													echo ucfirst($slot->day).'<br>';
+													echo $slot_date;
+													 
 													?>
 												</td>
 												<td class="all_apointment_time">	
