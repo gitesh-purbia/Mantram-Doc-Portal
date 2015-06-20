@@ -17,7 +17,7 @@ Class Patients_model extends BF_Model {
 			'display_name'	    	=> $input['first_name'].' '.$input['last_name'],
 			'password'	    		=> $input['password'],
 			'pass_confirm'	    	=> $input['pass_confirm'],
-			'role_id'	    		=> 4,
+			'role_id'	    		=> 10,
 			'deleted' 				=> 0,
 		);
 		

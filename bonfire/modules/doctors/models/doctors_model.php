@@ -20,7 +20,7 @@ class Doctors_model extends BF_Model {
 			'username'	    		=> $this->generateDoctorUID(),
 			'display_name'	    	=> $input['first_name'].' '.$input['last_name'],
 			'pass_confirm'	    	=> $input['pass_confirm'],
-			'role_id'	    		=> 2,
+			'role_id'	    		=> 9,
 			'deleted' 				=> 0,
 		);
 		

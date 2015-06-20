@@ -174,8 +174,6 @@ class Search extends Front_Controller
 	    $dayNo = date('N') - 1;
 	    if($dayNo == 0)
 	        return $array;
-	    elseif($dayNo == 5)
-	        return array_reverse($array);
 	    else
 	        return array_merge(array_slice($array, $dayNo), array_slice($array, 0, $dayNo));
 	}

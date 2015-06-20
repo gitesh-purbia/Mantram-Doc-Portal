@@ -3,7 +3,7 @@
 Class Appointments_model extends BF_Model 
 {
 	
-	protected $table = 'doctors';
+	protected $table = 'appointments';
 	protected $soft_deletes = TRUE;
 	protected $date_format = 'datetime';
 	protected $set_created = FALSE;

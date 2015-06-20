@@ -12,7 +12,6 @@ class Appointments extends Front_Controller
 		$this->load->model('appointments_model');
 		$this->load->model('patients/patients_model');
 		$this->load->model('users/user_model');
-	
 	}
 
 	public function book()
@@ -62,18 +61,18 @@ class Appointments extends Front_Controller
 				{
 					$this->sendRegistrationEmail($email_data);
 					Template::set_message('Your registration have been done successfully, Please check your email for verify your account.', 'success');
-					redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
+					Template::redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
 				}
 				else
 				{
 					Template::set_message('Error in Registration.', 'alert alert-danger alert-dismissabl');
-					redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
+					Template::redirect('appointments/book'.'?timeslots='.$apttime.'&clinicid='.$clinicid.'&doctor_id='.$doctorid.'&date='.$aptdate.'&class=active');
 				}
 			}
 			else
 			{
 				Template::set_message('Error in Registration.', 'alert alert-danger alert-dismissabl');
-				redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
+				Template::redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
 			}
 		}
 		
@@ -123,7 +122,7 @@ class Appointments extends Front_Controller
 						array(
 						'field' => 'email',
 						'label' => 'Email',
-						'rules' => 'trim|required|unique[patients.email]|valid_email|max_length[100]|xss_clean'
+						'rules' => 'trim|required|unique[users.email]|valid_email|max_length[50]|xss_clean'
 						),
 					);
 					break;
@@ -159,7 +158,7 @@ class Appointments extends Front_Controller
         );
 							
 		$message = $this->load->view('_emails/registration', $email_message_data, TRUE);
-		
+		echo $message; die();
 		$this->email->message($message);
 		
 		$this->email->send();

@@ -158,6 +158,10 @@ $validation_errors = validation_errors();
 									<?php 
 										echo Template::message(); 
 									?>
+									<input type="hidden" value="<?php echo $appointment_time; ?>" name="apttime"  />
+									<input type="hidden" value="<?php echo $appointment_date; ?>" name="aptdate"  />
+									<input type="hidden" value="<?php echo $clinicid; ?>" name="clinicid"  />
+									<input type="hidden" value="<?php echo $doctorid; ?>" name="doctorid"  />
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left no-pad">
 									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 										<input type="text" name="first_name" class="appt-form-txt" placeholder="First Name"  value="<?php echo set_value('first_name', isset($doctor['first_name']) ? $doctor['first_name'] : ''); ?>" />
@@ -190,10 +194,6 @@ $validation_errors = validation_errors();
 								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 									<input type="text" name="mobile" class="appt-form-txt" placeholder="Mobile"  value="<?php echo set_value('mobile', isset($doctor['mobile']) ? $doctor['mobile'] : ''); ?>"/>
 									<span class='help-inline'><?php echo form_error('mobile'); ?></span>
-									<input type="hidden" value="<?php echo $appointment_time; ?>" name="apttime"  />
-									<input type="hidden" value="<?php echo $appointment_date; ?>" name="aptdate"  />
-									<input type="hidden" value="<?php echo $clinicid; ?>" name="clinicid"  />
-									<input type="hidden" value="<?php echo $doctorid; ?>" name="doctorid"  />
 								</div>
 							</div>
 							<section class="color-7" id="btn-click">

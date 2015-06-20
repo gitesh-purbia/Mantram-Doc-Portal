@@ -20,7 +20,7 @@ class Labs_model extends BF_Model {
 			'username'	    		=> $this->generateLabUID(),
 			'display_name'	    	=> $input['lab_name'],
 			'pass_confirm'	    	=> $input['pass_confirm'],
-			'role_id'	    		=> 6,
+			'role_id'	    		=> 11,
 			'deleted' 				=> 0,
 		);
 		
