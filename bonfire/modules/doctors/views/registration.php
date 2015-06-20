@@ -3,7 +3,6 @@
 
 		<div class="bread-crumb-wrap ibc-wrap-3">
 			<div class="container">
-				<!--Title / Beadcrumb-->
 				<div class="inner-page-title-wrap col-xs-12 col-md-12 col-sm-12">
 					<div class="bread-heading">
 						<h1>Doctor's Registration</h1>
@@ -11,10 +10,10 @@
 					<div class="bread-crumb pull-right">
 						<ul>
 							<li>
-								<a href="index.html">Home</a>
+								<a href="<?php echo site_url();?>">Home</a>
 							</li>
 							<li>
-								<a href="about-us.html">Doctor's Registration</a>
+								<a href="#">Doctor's Registration</a>
 							</li>
 						</ul>
 					</div>

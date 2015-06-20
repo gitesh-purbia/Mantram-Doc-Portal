@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * DoctDoctorsors controller
+ * Doctors controller
  */
  
 class Doctors extends Front_Controller

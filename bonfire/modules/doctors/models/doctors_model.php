@@ -20,7 +20,7 @@ class Doctors_model extends BF_Model {
 			'username'	    		=> $this->generateDoctorUID(),
 			'display_name'	    	=> $input['first_name'].' '.$input['last_name'],
 			'pass_confirm'	    	=> $input['pass_confirm'],
-			'role_id'	    		=> 2,
+			'role_id'	    		=> 9,
 			'deleted' 				=> 0,
 		);
 		
@@ -35,10 +35,12 @@ class Doctors_model extends BF_Model {
 				'first_name'    		=> $input['first_name'],
 				'middle_name'	    	=> $input['middle_name'],
 				'last_name'	    		=> $input['last_name'],
+				'country'	    		=> null,
+				'state'		    		=> null,
+				'city'		    		=> null,
 				'hash'					=> $this->generateHash(),
 				'email_verified'		=> 0,
-				'mobile_code'			=> NULL,
-				'deleted' 				=> 0,
+				'mobile_code'			=> NULL
 			);
 			
 			$doctor = parent::insert($doctor_data);
