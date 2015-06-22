@@ -114,7 +114,7 @@ $validation_errors = validation_errors();
 													foreach($clinic_image as $image)
 													{
 													?>
-													 <a class="fancybox" rel="group" href="<?php echo site_url('bonfire/images/clinic_images/') . '/' . $image; ?>"><img src="<?php echo site_url('bonfire/images/clinic_images/') . '/' . $image; ?>" style="height: 50px;width: 50px;border-radius:5px; "></a>
+													 <a class="fancybox" rel="group" href="/Ilaaj/uploads/clinics/<?php echo  '/' . $image; ?>"><img src="/Ilaaj/uploads/clinics/<?php echo  '/' . $image; ?>" style="height: 50px;width: 50px;border-radius:5px; "></a>
 													<?php
 													}
 												 }
