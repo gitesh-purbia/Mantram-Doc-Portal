@@ -13,7 +13,7 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left blgo-full-wrap no-pad">
 					<?php echo Template::message(); ?>
 					<div class="iconbox-readmore">
-						<a href="http://localhost/ilaaj">Login</a>
+						<a href="http://localhost/Ilaaj">Login</a>
 					</div>
 				</div>
 			<?php }else if(isset($verification_err) && !$verification_err){ ?>

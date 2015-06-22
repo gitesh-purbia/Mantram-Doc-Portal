@@ -35,6 +35,7 @@ class Doctors_model extends BF_Model {
 				'first_name'    		=> $input['first_name'],
 				'middle_name'	    	=> $input['middle_name'],
 				'last_name'	    		=> $input['last_name'],
+				'mobile1'	    		=> $input['mobile'],
 				'country'	    		=> null,
 				'state'		    		=> null,
 				'city'		    		=> null,
@@ -120,9 +121,8 @@ class Doctors_model extends BF_Model {
 	{
 		$query = "select u.id,u.display_name from bf_doctors d inner join bf_users u
 					on d.user_id = u.id
-					where d.deleted = 0 and u.active = 1
-					and u.display_name like '%$string%'
-					";
+					where u.deleted=0 and u.active = 1
+					and u.display_name like '%$string%'";
 		$doctors = $this->db->query($query)->result();		
 		return $doctors;	
 	}
