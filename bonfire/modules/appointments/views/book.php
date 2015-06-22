@@ -48,11 +48,16 @@ $validation_errors = validation_errors();
 										<?php if($doctor_record): ?>
 										<div class="row" style="padding: 20px;">
 											<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-										       <img class="doctor_img" src='<?php echo site_url('bonfire/images/doctor_images').'/'.$doctor_record[0]->photo?>' class="img-responsive"/>	
+										       <img class="doctor_img" src='/Ilaaj/uploads/doctors/<?php echo '/'.$doctor_record[0]->photo?>' class="img-responsive"/>	
 											</div>
 											<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 												<div class="doc-name-class"><?php echo $doctor_record[0]->first_name.' '.$doctor_record[0]->middle_name.' '.$doctor_record[0]->last_name; ?></div>
-												<span class="doc-title"><b> <?php echo $doctor_record[0] -> education; ?></b></span>
+													<?php  
+														$education_array = json_decode($doctor_record[0] -> education);
+														if(isset($education_array))
+														{ foreach($education_array as $education): ?>
+															<span> <?php echo $education->degree; ?> </span>
+														<?php endforeach; } ?>
 											    <p><?php echo $doctor_record[0] -> speciality; ?> </p>
 											    <p><?php echo $doctor_record[0] -> overview; ?> </p>
 											    <hr>
