@@ -74,7 +74,7 @@
 								   	<?php 
 								   	 if($record->photo) 
 								   	 { ?>
-											<img class="doctor_img" src='<?php echo site_url('bonfire/images/doctor_images').'/'.$record->photo?>' class="img-responsive"/> 
+											<img class="doctor_img" src='/Ilaaj/uploads/doctors/<?php echo '/'.$record->photo?>' class="img-responsive"/> 
 									   	   	<?php 
 								   	 }
 									 else
@@ -82,24 +82,30 @@
 								 		<img class="doctor_img" src="<?php echo Template::theme_url('images/default_user.png'); ?>" />
 								 		<?php } ?>
 									</div>
-									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			                          	<a id="doctors" href="<?php echo site_url('search/doctor_profile/') . '/' . $record -> doctorid; ?>">
 				                          	<div class="doc-name-class">
 				                          		<?php echo 'Dr.'.$record->first_name.' '.$record->middle_name.' '.$record->last_name;?> 
 				                          	</div>
-				                          	
 			                          	</a>
-			                          	<span class="doc-title"><b><?php echo $record->education;?></b></span>
-		                          	    <p>
-		                          	    	<?php echo  $record -> speciality ?>
-		                          	    </p>
+				                          	<?php 
+											$education_arry = json_decode($record->education);
+											if(isset($education_arry)){
+											foreach($education_arry as $education)
+											{?>
+			                          	    <span><?php echo $education->degree.'<br>';?></span>
+											<?php }}
+											  ?>
+		                          	    <span>
+		                          	    	<?php echo  'Speciality:'.$record -> speciality ?>
+		                          	    </span>
 		                          	    <?php
 		                          	    foreach($clinic_records as $key => $clinic):
 											if($record->doctorid == $clinic->doctorid)
 											{
 											 	for($i=0;$i<1;$i++)
 												{ ?>
-											 	<p>
+											 	<p class="doc-title">
 											 		<?php echo $clinic -> clinic_name; ?>
 											 	</p>
 											 	<?php
@@ -108,7 +114,7 @@
 											  	if($clinic_image[0]!=''){
 													foreach($clinic_image as $image)
 													{ ?>
-														<a class="fancybox"  rel="group" href="<?php echo site_url('bonfire/images/clinic_images/') . '/' . $image; ?>"><img src="<?php echo site_url('bonfire/images/clinic_images/') . '/' . $image; ?>" style="height: 50px;width: 50px;border-radius:5px; "></a>
+														<a class="fancybox"  rel="group" href="/Ilaaj/uploads/clinics/<?php echo  '/' . $image; ?>"><img src="/Ilaaj/uploads/clinics/<?php echo  '/' . $image; ?>" style="height: 50px;width: 50px;border-radius:5px; "></a>
 													<?php 
 													} }
 												}
@@ -116,8 +122,8 @@
 											}
 										endforeach; ?> 
 									</div>
-								    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12"></div>
-									<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+								    
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 										<ul>
 											<?php if($record->city && $record->state && $record->country){ ?>
 											   <li class="fa fa-map-marker" style="font-size: 25px;">&nbsp;</li><span> <?php echo ucfirst($record->city).','.$record->state.','.$record->country; ?></span><br>

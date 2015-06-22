@@ -29,12 +29,18 @@
 						 <?php foreach($doctor_record as $d_record): ?>
 		                       <div class="row" style="padding: 20px;">
 								   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-								     <img src="<?php echo site_url('bonfire/images/doctor_images/') . '/' . $d_record -> photo; ?>" style="height: 100px;width: 100px;border-radius: 10px;" />  	
+								     <img src="/Ilaaj/uploads/doctors/<?php echo '/' . $d_record -> photo; ?>" style="height: 100px;width: 100px;border-radius: 10px;" />  	
 									</div>
 									<div class="col-lg-10 col-md-10 col-sm-10  col-xs-12">
 									   <div class="doc-name-class"> <?php echo $d_record->first_name ?>&nbsp;<?php echo $d_record->middle_name ?>&nbsp;<?php echo $d_record -> last_name; ?></div>		
-										<span class="doc-title"><b> <?php echo $d_record -> education; ?></b></span>
-									    <p><?php echo $d_record -> speciality; ?> </p>
+										<?php 
+											$education_arry = json_decode($d_record->education);
+											foreach($education_arry as $education)
+											{?>
+			                          	    <span><?php echo $education->degree.'<br>';?></span>
+											<?php }
+											  ?>
+									    <p><?php echo 'Speciality:'.$d_record -> speciality; ?> </p>
 									    <p><?php echo $d_record -> overview; ?> </p>
 									</div>
 								 </div>
@@ -63,7 +69,7 @@
 											foreach($clinic_image as $image)
 											{
 											?>
-											 <a class="fancybox" rel="group" href="<?php echo site_url('bonfire/images/clinic_images/') . '/' . $image; ?>"><img src="<?php echo site_url('bonfire/images/clinic_images/') . '/' . $image; ?>" style="height: 50px;width: 50px;border-radius:5px; "></a>
+											 <a class="fancybox" rel="group" href="/Ilaaj/uploads/clinics/<?php echo  '/' . $image; ?>"><img src="/Ilaaj/uploads/clinics/<?php echo  '/' . $image; ?>" style="height: 50px;width: 50px;border-radius:5px; "></a>
 											<?php
 											}
 										 }

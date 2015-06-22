@@ -13,11 +13,11 @@ Class Appointments_model extends BF_Model
 	//---------------------------------------------------------------------------------------------
 	public function get_doctor_info($doctorid)
 	{
-		$query="select d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,d.photo,d.overview,
+		$query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,d.photo,d.overview,
 				     s.name as speciality
 				     from bf_doctors d 
-					 inner join bf_doctors_specialities ds on ds.doctor_id=d.id
-					 inner join bf_specialities s on s.id=ds.speciality_id where d.id=".$doctorid;
+					 inner join bf_doctors_specialities ds on ds.doctor_id=d.user_id
+					 inner join bf_specialities s on s.id=ds.speciality_id where d.user_id=".$doctorid;
 				return $this->db->query($query)->result();
 	}
 	//--------------------------------------------------------------------------------------------------

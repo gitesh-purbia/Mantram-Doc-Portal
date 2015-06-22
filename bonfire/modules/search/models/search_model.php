@@ -14,15 +14,15 @@ Class Search_model extends BF_Model
 	
 	public function get_doctor_by_specialities($speciality)
 	{
-		$query="select d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,
+		$query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,
                         co.name as country,st.name as state,ci.name as city,d.photo,
 				        d.mobile1 as phoneno, s.name as speciality
 						from bf_doctors d 
-						inner join bf_doctors_specialities ds on d.id = ds.doctor_id
+						inner join bf_doctors_specialities ds on d.user_id = ds.doctor_id
 						inner join bf_specialities s on s.id = ds.speciality_id
-						inner join bf_countries co on co.id=d.country
-						inner join bf_state st on st.id=d.state
-						inner join bf_cities ci on ci.id=d.city
+						left join bf_countries co on co.id=d.country
+						left join bf_state st on st.id=d.state
+						left join bf_cities ci on ci.id=d.city
 						where s.name like '%$speciality%'";
 				return $this->db->query($query)->result();
 	}
@@ -30,11 +30,11 @@ Class Search_model extends BF_Model
 	//-----------------------------------------------------------------------------------------------------
 	public function get_clinic_by_specialities($speciality)
 	{
-		$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
+		$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.user_id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
 									from bf_doctors d 
-									inner join bf_doctors_specialities ds on d.id = ds.doctor_id
+									inner join bf_doctors_specialities ds on d.user_id = ds.doctor_id
 									inner join bf_specialities s on s.id = ds.speciality_id
-									inner join bf_doctors_clinic dc on dc.doctor_id=d.id
+									inner join bf_doctors_clinic dc on dc.doctor_id=d.user_id
 									inner join bf_clinics c on c.id=dc.clinic_id
 									inner join bf_clinic_images ci on ci.clinic_id=c.id
 									where s.name like '%$speciality%'
@@ -44,25 +44,26 @@ Class Search_model extends BF_Model
 	//-----------------------------------------------------------------------------------------------------------
 	public function get_all_specialities_doctors()
 		{
-			$query="select d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,
+			$query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,
 	                co.name as country,st.name as state,ci.name as city,
-	                d.photo,d.mobile1 as phoneno, s.name as speciality
+	                d.photo,d.mobile1 as phoneno, group_concat(s.name) speciality
 					from bf_doctors d 
-					inner join bf_doctors_specialities ds on d.id = ds.doctor_id
-					inner join bf_countries co on co.id=d.country
-					inner join bf_state st on st.id=d.state
-					inner join bf_cities ci on ci.id=d.city
-					inner join bf_specialities s on s.id = ds.speciality_id";
+					inner join bf_doctors_specialities ds on d.user_id = ds.doctor_id
+					left join bf_countries co on co.id=d.country
+					left join bf_state st on st.id=d.state
+					left join bf_cities ci on ci.id=d.city
+					inner join bf_specialities s on s.id = ds.speciality_id
+					group by doctorid";
 				return $this->db->query($query)->result();
 		}
 	//--------------------------------------------------------------------------------------------------------------
 	public function get_all_specialities_clinic()
 		{
-			$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
+			$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.user_id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
 							from bf_doctors d 
-							inner join bf_doctors_specialities ds on d.id = ds.doctor_id
+							inner join bf_doctors_specialities ds on d.user_id = ds.doctor_id
 							inner join bf_specialities s on s.id = ds.speciality_id
-							inner join bf_doctors_clinic dc on dc.doctor_id=d.id
+							inner join bf_doctors_clinic dc on dc.doctor_id=d.user_id
 							inner join bf_clinics c on c.id=dc.clinic_id
 							inner join bf_clinic_images ci on ci.clinic_id=c.id
 							GROUP BY c.id, doctorid";
@@ -71,17 +72,17 @@ Class Search_model extends BF_Model
 	#=======================================Doctor=======================================================================
 	public function get_doctors_by_name($doctor)
 		{
-			$query="select d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.mobile1 as phoneno,d.education,d.photo,
+			$query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.mobile1 as phoneno,d.education,d.photo,
                          co.name as country,st.name as state,ci.name as city,
-						 s.name as speciality
+						 group_concat(s.name) speciality
 						 from bf_users u 
 						 inner join bf_doctors d on u.id=d.user_id
-						 inner join bf_doctors_specialities ds on ds.doctor_id=d.id
+						 inner join bf_doctors_specialities ds on ds.doctor_id=d.user_id
 						 inner join bf_specialities s on s.id=ds.speciality_id 
-						 inner join bf_countries co on co.id=d.country
-					  	 inner join bf_state st on st.id=d.state
-						 inner join bf_cities ci on ci.id=d.city
-						 where u.display_name like '%$doctor%'";
+						 left join bf_countries co on co.id=d.country
+					  	 left join bf_state st on st.id=d.state
+						 left join bf_cities ci on ci.id=d.city
+						 where u.display_name like '%$doctor%' group by doctorid";
 				return $this->db->query($query)->result();
 		}
 		
@@ -89,10 +90,10 @@ Class Search_model extends BF_Model
 	
 	public function get_doctors_clinic($doctor)
 		{
-			$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
+			$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.user_id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
 						 from bf_users u 
 						 inner join bf_doctors d on u.id=d.user_id
-						 inner join bf_doctors_clinic dc on dc.doctor_id=d.id
+						 inner join bf_doctors_clinic dc on dc.doctor_id=d.user_id
 						 inner join bf_clinics c on c.id=dc.clinic_id 
 						 inner join bf_clinic_images ci on ci.clinic_id=c.id where u.display_name like '%$doctor%'
 						 GROUP BY c.id,doctorid";
@@ -102,16 +103,16 @@ Class Search_model extends BF_Model
 	
 	public function get_all_doctors()
 		{
-			$query="select d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.mobile1 as phoneno,d.education,d.photo,
+			$query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.mobile1 as phoneno,d.education,d.photo,
                          co.name as country,st.name as state,ci.name as city,
-						 s.name as speciality
+						 group_concat(s.name) speciality
 						 from bf_users u 
 						 inner join bf_doctors d on u.id=d.user_id
-						 inner join bf_doctors_specialities ds on ds.doctor_id=d.id
+						 inner join bf_doctors_specialities ds on ds.doctor_id=d.user_id
 						 inner join bf_specialities s on s.id=ds.speciality_id
-						 inner join bf_countries co on co.id=d.country
-					  	 inner join bf_state st on st.id=d.state
-						 inner join bf_cities ci on ci.id=d.city";
+						 left join bf_countries co on co.id=d.country
+					  	 left join bf_state st on st.id=d.state
+						 left join bf_cities ci on ci.id=d.city group by doctorid";
 			return $this->db->query($query)->result();
 		}
 		
@@ -119,12 +120,12 @@ Class Search_model extends BF_Model
 	
 	public function get_all_doctors_clinic()
 		{
-			$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
+			$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.user_id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
 						 from bf_users u 
 						 inner join bf_doctors d on u.id=d.user_id
-						 inner join bf_doctors_clinic dc on dc.doctor_id=d.id
+						 inner join bf_doctors_clinic dc on dc.doctor_id=d.user_id
 						 inner join bf_clinics c on c.id=dc.clinic_id 
-						 inner join bf_clinic_images ci on ci.clinic_id=c.id where u.display_name like '%%'
+						 inner join bf_clinic_images ci on ci.clinic_id=c.id
 						 GROUP BY c.id,doctorid";
 			return $this->db->query($query_for_clinic)->result();
 		}
@@ -133,17 +134,18 @@ Class Search_model extends BF_Model
   public function get_clinic_doctor($clinic)
 	  {
 				
-	  		$query="select  d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.mobile1 as phoneno,d.education,d.photo,
+	  		$query="select  d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.mobile1 as phoneno,d.education,d.photo,
 					       co.name as country,st.name as state,ci.name as city,
-						   s.name as speciality
+						   group_concat(s.name) speciality
 					       from bf_clinics c 
 						   inner join bf_doctors_clinic dc on dc.clinic_id=c.id
-						   inner join bf_doctors d on d.id=dc.doctor_id
-						   inner join bf_doctors_specialities ds on ds.doctor_id=d.id
-						   inner join bf_countries co on co.id=d.country
-					  	   inner join bf_state st on st.id=d.state
-						   inner join bf_cities ci on ci.id=d.city
-						   inner join bf_specialities s on s.id=ds.speciality_id where c.name like '%$clinic%'";
+						   inner join bf_doctors d on d.user_id=dc.doctor_id
+						   inner join bf_doctors_specialities ds on ds.doctor_id=d.user_id
+						   left join bf_countries co on co.id=d.country
+					  	   left join bf_state st on st.id=d.state
+						   left join bf_cities ci on ci.id=d.city
+						   inner join bf_specialities s on s.id=ds.speciality_id where c.name like '%$clinic%'
+						   group by doctorid";
 						return $this->db->query($query)->result();
 			
 	  	
@@ -152,10 +154,10 @@ Class Search_model extends BF_Model
   
   public function get_clinic_by_name($clinic)
 	  {
-	  	$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
-					      from bf_clinics c 
+	  	$query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.user_id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
+					        from bf_clinics c 
 							inner join bf_doctors_clinic dc on dc.clinic_id=c.id
-							inner join bf_doctors d on d.id=dc.doctor_id
+							inner join bf_doctors d on d.user_id=dc.doctor_id
 							inner join bf_clinic_images ci on ci.clinic_id=dc.clinic_id where c.name like '%$clinic%'
 							group by c.id,doctorid";
 					return $this->db->query($query_for_clinic)->result();
@@ -163,27 +165,27 @@ Class Search_model extends BF_Model
 	 //--------------------------------------------------------------------------------------------------------- 
    public function get_all_clinic_doctors()
    {
-   	        $query="select distinct d.id as doctorid,d.first_name,d.middle_name,d.mobile1 as phoneno,d.last_name,d.education,d.photo,
+   	        $query="select distinct d.user_id as doctorid,d.first_name,d.middle_name,d.mobile1 as phoneno,d.last_name,d.education,d.photo,
 				        co.name as country,st.name as state,ci.name as city,
-						s.name as speciality
+						group_concat(s.name) speciality
 				        from bf_clinics c 
 						inner join bf_doctors_clinic dc on dc.clinic_id=c.id
-						inner join bf_doctors d on d.id=dc.doctor_id
-						inner join bf_doctors_specialities ds on ds.doctor_id=d.id
+						inner join bf_doctors d on d.user_id=dc.doctor_id
+						inner join bf_doctors_specialities ds on ds.doctor_id=d.user_id
 						inner join bf_specialities s on s.id=ds.speciality_id
-						inner join bf_countries co on co.id=d.country
-					  	inner join bf_state st on st.id=d.state
-						inner join bf_cities ci on ci.id=d.city";
+						left join bf_countries co on co.id=d.country
+					  	left join bf_state st on st.id=d.state
+						left join bf_cities ci on ci.id=d.city group by doctorid";
 					 return $this->db->query($query)->result();
    }	
    //------------------------------------------------------------------------------------------------------------- 
    public function get_all_clinic()
    {
-   	   $query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
-				      from bf_clinics c 
+   	   $query_for_clinic="select c.id as clinic_id,c.name as clinic_name,d.user_id as doctorid,GROUP_CONCAT(ci.image,'') clinic_images
+				        from bf_clinics c 
 						inner join bf_doctors_clinic dc on dc.clinic_id=c.id
-						inner join bf_doctors d on d.id=dc.doctor_id
-						inner join bf_clinic_images ci on ci.clinic_id=dc.clinic_id where c.name like '%%'
+						inner join bf_doctors d on d.user_id=dc.doctor_id
+						inner join bf_clinic_images ci on ci.clinic_id=dc.clinic_id
 						group by c.id,doctorid";
 			 return $this->db->query($query_for_clinic)->result();
    }
@@ -209,11 +211,11 @@ Class Search_model extends BF_Model
 	#==========================================doctor profile==========================================================
 	public function get_doctor_details($doctor_id)
 	{
-		   $query="select d.id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,d.photo,d.overview,
-				     s.name as speciality
+		   $query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,d.photo,d.overview,
+				     group_concat(s.name) speciality
 				     from bf_doctors d 
-					 inner join bf_doctors_specialities ds on ds.doctor_id=d.id
-					 inner join bf_specialities s on s.id=ds.speciality_id where d.id='$doctor_id'";
+					 inner join bf_doctors_specialities ds on ds.doctor_id=d.user_id
+					 inner join bf_specialities s on s.id=ds.speciality_id where d.user_id='$doctor_id'";
 			 return $this->db->query($query)->result();
 	}
 	//-----------------------------------------------------------------------------------------------
@@ -222,11 +224,11 @@ Class Search_model extends BF_Model
       $clinic_records="select c.name as clinic_name,c.id as clinicid,c.address_line1 as address,c.fees,
 				       c.latitude,c.longitude,s.name as state,co.name as country,city.name as city
 				       from bf_doctors d 
-				       inner join bf_doctors_clinic dc on dc.doctor_id=d.id
+				       inner join bf_doctors_clinic dc on dc.doctor_id=d.user_id
 					   inner join bf_clinics c on c.id=dc.clinic_id
 					   inner join bf_state s on s.id=c.state
 					   inner join bf_countries co on co.id=c.country
-					   inner join bf_cities city on city.id=c.city where d.id='$doctor_id'";
+					   inner join bf_cities city on city.id=c.city where d.user_id='$doctor_id'";
 				return $this->db->query($clinic_records)->result();
 	}
 	//-------------------------------------------------------------------------------------------------
@@ -234,9 +236,9 @@ Class Search_model extends BF_Model
 	{
 		$clinic_images_record="select c.id as clinicid,group_concat(ci.image,'') clinic_images 
 					       from bf_doctors d 
-					       inner join bf_doctors_clinic dc on dc.doctor_id=d.id
+					       inner join bf_doctors_clinic dc on dc.doctor_id=d.user_id
 					       inner join bf_clinics c on c.id=dc.clinic_id
-						   inner join bf_clinic_images ci on ci.clinic_id=c.id where d.id='$doctor_id'
+						   inner join bf_clinic_images ci on ci.clinic_id=c.id where d.user_id='$doctor_id'
 					       group by c.id";
 		     return $this->db->query($clinic_images_record)->result();
 	}
