@@ -169,15 +169,15 @@ $validation_errors = validation_errors();
 									<input type="hidden" value="<?php echo $doctorid; ?>" name="doctorid"  />
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left no-pad">
 									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-										<input type="text" name="first_name" class="appt-form-txt" placeholder="First Name"  value="<?php echo set_value('first_name', isset($doctor['first_name']) ? $doctor['first_name'] : ''); ?>" />
+										<input type="text" name="first_name" class="appt-form-txt" placeholder="First Name"  value="<?php echo set_value('first_name', isset($patient['first_name']) ? $patient['first_name'] : ''); ?>" />
 										<span class='help-inline'><?php echo form_error('first_name'); ?></span>
 									</div>
 									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-										<input type="text" name="middle_name" class="appt-form-txt" placeholder="Middle Name" value="<?php echo set_value('middle_name', isset($doctor['middle_name']) ? $doctor['middle_name'] : ''); ?>" />
+										<input type="text" name="middle_name" class="appt-form-txt" placeholder="Middle Name" value="<?php echo set_value('middle_name', isset($patient['middle_name']) ? $patient['middle_name'] : ''); ?>" />
 										<span class='help-inline'><?php echo form_error('middle_name'); ?></span>
 									</div>
 									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-										<input type="text" name="last_name" class="appt-form-txt" placeholder="Last Name"  value="<?php echo set_value('last_name', isset($doctor['last_name']) ? $doctor['last_name'] : ''); ?>" />
+										<input type="text" name="last_name" class="appt-form-txt" placeholder="Last Name"  value="<?php echo set_value('last_name', isset($patient['last_name']) ? $patient['last_name'] : ''); ?>" />
 										<span class='help-inline'><?php echo form_error('last_name'); ?></span>
 									</div>
 							   </div>
@@ -193,11 +193,11 @@ $validation_errors = validation_errors();
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left no-pad">
 								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-									<input type="email" name="email" class="appt-form-txt" placeholder="Email"  value="<?php echo set_value('email', isset($doctor['email']) ? $doctor['email'] : ''); ?>" />
+									<input type="email" name="email" class="appt-form-txt" placeholder="Email"  value="<?php echo set_value('email', isset($patient['email']) ? $patient['email'] : ''); ?>" />
 									<span class='help-inline'><?php echo form_error('email'); ?></span>
 								</div>
 								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-									<input type="text" name="mobile" class="appt-form-txt" placeholder="Mobile"  value="<?php echo set_value('mobile', isset($doctor['mobile']) ? $doctor['mobile'] : ''); ?>"/>
+									<input type="text" name="mobile" class="appt-form-txt" placeholder="Mobile"  value="<?php echo set_value('mobile', isset($patient['mobile']) ? $patient['mobile'] : ''); ?>"/>
 									<span class='help-inline'><?php echo form_error('mobile'); ?></span>
 								</div>
 							</div>
