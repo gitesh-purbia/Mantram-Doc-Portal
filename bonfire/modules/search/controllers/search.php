@@ -45,7 +45,7 @@ class Search extends Front_Controller
 			}
 			else
 		    {
-			    $all_specialities_doctors = $this->search_model->get_all_specialities_doctors();	
+			    $all_specialities_doctors = $this->search_model->get_all_specialities_doctors();
 			    $all_specialities_clinics = $this->search_model->get_all_specialities_clinic();	
 				$all_specialities_clinics_time = $this->search_model->get_clinic_time($all_specialities_doctors);
 		        Template::set('records',$all_specialities_doctors);

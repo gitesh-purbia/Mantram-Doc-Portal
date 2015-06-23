@@ -297,3 +297,27 @@ a, a:visited {
 	font-size: 14px;
 }
 
+.modal-dialog {
+    margin: 30px auto;
+    width: 450px;
+}
+.modal
+{
+	z-index: 100000000;
+}
+
+.form-submit1
+{
+	text-align: center;
+}
+
+.form-group-less-margin{
+    margin-bottom: 15px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.forgot-password-link a{
+	color: #333333;
+	font-size: 14px;
+}

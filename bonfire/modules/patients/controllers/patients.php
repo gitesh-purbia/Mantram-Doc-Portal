@@ -246,6 +246,7 @@ class Patients extends Front_Controller
 						{
 							Template::set_message('Thank you for verify your mobile number, Please login.' , 'success');
 							Template::set('login',true);
+							Template::set('backend',$this->config->item('backend_url'));
 						}
 						else {
 							Template::set('verification_err',true);

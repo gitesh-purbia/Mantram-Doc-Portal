@@ -7,8 +7,9 @@
 			'settings.min.css',
 			'slides.css',
 			'inline.min.css',
+			'jquery.fancybox.css',
+			'bootstrap-social.css',
 			'custom.css',
-			'jquery.fancybox.css'
 		));
 		
 	Assets::add_js(array(
@@ -26,8 +27,12 @@
 			'ilaaj.js',
 			'jquery.fancybox.js',
 			'jssor.slider.js',
+			'validate.min.js',
 			'jssor.js'
 		));	
+		
+		$inline = 'ilaaj()';
+   	 	Assets::add_js( $inline, 'inline' );
 ?>
 
 <!DOCTYPE HTML>
