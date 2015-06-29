@@ -1,6 +1,5 @@
 <div class="complete-footer">
 	<footer id="footer">
-
 		<div class="container">
 			<div class="row">
 				<!--Foot widget-->
@@ -112,6 +111,7 @@
 		</div>
 
 	</footer>
+	</div>
 
 	<div class="bottom-footer">
 		<div class="container">
@@ -148,6 +148,69 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade my-modal" id="loginpanel">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Login here..</h4>
+			</div>
+			<div class="modal-body" style=" height: auto;">
+				<div class="row">
+					<div class="col-lg-12">
+						<?php echo form_open('registration/login', array('class' => "register form-horizontal", 'autocomplete' => 'off','id'=>'loginform')); ?>
+						<fieldset class="">
+							<?php echo Template::message(); ?>
+							<div class="form-group form-group-less-margin">
+								<label for="login_value" class="col-sm-3 control-label">Username</label>
+								<div class="col-sm-9 controls">
+									<div class="row">
+									<div class="col-xs-11">
+										<div class="input-icon right">
+											<input type="text" class="form-control" name="login" id="login_value" value="<?php echo set_value('login'); ?>" tabindex="1" placeholder="<?php echo $this->settings_lib->item('auth.login_type') == 'both' ? lang('bf_username') .'/'. lang('bf_email') : ucwords($this->settings_lib->item('auth.login_type')) ?>" />
+										</div>
+									</div> 
+									</div>
+								</div>
+							</div>
+							<div class="form-group form-group-less-margin">
+								<label for="login_value" class="col-sm-3 control-label">Password</label>
+								<div class="col-sm-9 controls">
+									<div class="row">
+										<div class="col-xs-11">
+											<div class="input-icon right forgot-password-link">
+												<input type="password" class="form-control" name="password" id="password" value="" tabindex="2" placeholder="<?php echo lang('bf_password'); ?>" />
+												<a href="<?php echo site_url('forgot_password'); ?>">Forgot Password</a>
+											</div>
+										</div> 
+									</div>
+								</div>
+							</div>
+							<div class="form-submit1">
+								<input class="btn btn-primary" name="submit" type="submit" id="submit" value="Login" style="padding: 8px 20px;">
+							</div>
+						</fieldset>
+						<?php echo form_close(); ?>
+					</div>
+				</div>
+				<br/>
+				<div class="row" style="padding-top: 0px;">	
+					<div class="col-lg-2"></div>
+					<div class="col-lg-8">
+						<div class="social-wrap a">
+							<a class="btn btn-block btn-social btn-facebook" id="facebookss" href="<?php echo site_url('tsso/login/Facebook');?>" ><i class="fa fa-facebook"></i>Sign in with Facebook</a>
+							<a class="btn btn-block btn-social btn-google" href="<?php echo site_url('tsso/login/Google');?>" ><i class="fa fa-google"></i>Sign in with Google</a>
+						</div>
+					</div>
+				</div>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>	
 <!--JS Inclution-->
 <?php echo Assets::js(); ?>
 <script type='text/javascript'>

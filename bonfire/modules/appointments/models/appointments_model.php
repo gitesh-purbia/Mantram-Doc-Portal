@@ -11,6 +11,25 @@ Class Appointments_model extends BF_Model
 	protected $key			= "user_id";
 	
 	//---------------------------------------------------------------------------------------------
+	public  function insert($input = array(),$id)
+	{
+		$data = array(
+						'doctor_id'		=> $input['doctorid'],
+						'clinic_id' 	=> $input['clinicid'],
+						'time' 			=> $input['time'],
+						'date' 			=> $input['date'],
+						'patient_id'	=> $id
+					);
+			if($appontment = parent::insert($data))
+			{
+				return $appontment;
+			}
+			else
+			 {
+				return FALSE;	
+			}
+	}
+	//---------------------------------------------------------------------------------------------
 	public function get_doctor_info($doctorid)
 	{
 		$query="select d.user_id as doctorid,d.first_name,d.middle_name,d.last_name,d.education,d.photo,d.overview,

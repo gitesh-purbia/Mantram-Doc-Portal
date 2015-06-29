@@ -1,14 +1,3 @@
-<div id="search-overlay">
-	<div class="container">
-		<div id="close">
-			X
-		</div>
-
-		<input id="hidden-search" type="text" placeholder="Start Typing..." autofocus autocomplete="off"  />
-		<input id="display-search" type="text" placeholder="Start Typing..." autofocus autocomplete="off" />
-	</div>
-</div>
-
 <div class="topbar-info no-pad">
 	<div class="container">
 		<div class="social-wrap-head col-md-2 no-pad">
@@ -31,7 +20,7 @@
 			</ul>
 		</div>
 		<div class="top-info-contact pull-right col-md-6">
-			<a href="<?php echo FRONT_URL;?>registration">Register with us</a>   |    Call Us Today! +123 455 755  |    contact@ilaaj.com <div id="search" class="fa fa-search search-head"></div>
+			<?php if(!$this->auth->is_logged_in()):?><a href="javascript:void(0)" id="login">Login |</a><a href="<?php echo FRONT_URL;?>registration">Register with us</a><?php else:?><span>Welcome, <?php echo $current_user->display_name;?></span><a href="<?php echo 'http://localhost/ilaaj_front/logout'; ?>">|Log-Out</a>|<a href="<?php echo 'http://localhost/Ilaaj/'; ?>">DashBoard</a> <?php endif; ?>   |    Call Us Today! +123 455 755  |    contact@ilaaj.com
 		</div>
 	</div>
 </div>

@@ -1,6 +1,7 @@
 <?php
 $mail_attrs = array (
     'data'              =>  $data,
+    'url'              	=>  $url,
 );
 ?>
 
@@ -221,7 +222,7 @@ $mail_attrs = array (
                                                             <table border="0" cellpadding="0" cellspacing="0" width="50%" class="emailButton" style="background-color: #3498DB;">
                                                                 <tr>
                                                                     <td align="center" valign="middle" class="buttonContent" style="padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;">
-                                                                        <a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;" href="http://www.ilaaj.com/doctors/verification/<?php echo $data['hash'] ?>" target="_blank">Confirmation</a>
+                                                                        <a style="color:#FFFFFF;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:135%;" href="<?php echo $url.'/'.$data['hash']; ?>" target="_blank">Confirmation</a>
                                                                     </td>
                                                                 </tr>
                                                             </table>

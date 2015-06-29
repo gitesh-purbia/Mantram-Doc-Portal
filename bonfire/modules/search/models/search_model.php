@@ -264,5 +264,11 @@ Class Search_model extends BF_Model
 						where ci.name='$location'";
 				return $this->db->query($query)->result();
 	}
+	#==============================================================================================================
+	public function get_clinic_book_time($clinic_id)
+	{
+		$query="SELECT * FROM bf_appointments where clinic_id='$clinic_id' and  date > DATE_SUB(NOW(), INTERVAL 1 day)";
+		return $this->db->query($query)->result();
+	}
 	
 }// End of class

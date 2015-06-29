@@ -53,6 +53,13 @@
 				</button>
 			</div>
 			<?php echo form_close(); ?>
+			<?php if($this->session->flashdata('msg')): ?>
+			<center>
+			<div class="alert alert-success" id="message">
+				<p><?php echo $this->session->flashdata('msg'); ?></p>
+			</div>
+			</center>
+			<?php endif; ?>
 		</div>
 		</div>
 		<span u="arrowleft" class="jssora21l" style="top: 123px; left: 8px;"> </span>
@@ -777,7 +784,11 @@
 		$(window).bind("resize", ScaleSlider);
 		$(window).bind("orientationchange", ScaleSlider);
 		//responsive code end
-
+		//-------------------------------------------------------------------
+		$('#message').delay(6000).fadeOut();
 		}
+		
+        
+      
 </script>
 <?php Assets::add_js('init()', "inline"); ?>

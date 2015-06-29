@@ -264,12 +264,7 @@ a, a:visited {
 	
 }
 
-.all_apointment_time a:hover
-{
-	display:inline;
-	color:#FFFFFF;
-	border-radius: 2px;
-}
+
 .services-content-wrap
 {
 	background-color: #fff;
@@ -297,3 +292,31 @@ a, a:visited {
 	font-size: 14px;
 }
 
+.modal-dialog {
+    margin: 30px auto;
+    width: 450px;
+}
+.modal
+{
+	z-index: 100000000;
+}
+
+.form-submit1
+{
+	text-align: center;
+}
+
+.form-group-less-margin{
+    margin-bottom: 15px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.forgot-password-link a{
+	color: #333333;
+	font-size: 14px;
+}
+.booked
+{
+	color:green;
+}

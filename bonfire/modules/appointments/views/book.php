@@ -125,86 +125,36 @@ $validation_errors = validation_errors();
 									</div>
 								</div>
 							</div>
-
 						</div>
-
-						<div class="appointment-form col-xs-12 col-sm-5 col-md-5 col-lg-5 no-pad wow fadeInRight animated" data-wow-delay="1s" data-wow-offset="200">
+						<div class="appointment-form col-xs-12 col-sm-5 col-md-5 col-lg-5 no-pad wow fadeInRight animated" id="appointments" data-wow-delay="1s" data-wow-offset="200">
 							<div class="appointment-form-title">
-								<i class="icon-hospital2 appointment-form-icon"></i>Book An Appointment
+								<i class="icon-hospital2 appointment-form-icon"></i>Your Appointment view
 							</div>
-							<div class="content-tabs">
-								<ul class="nav nav-tabs">
-									<li class="active<?php if(isset($active)){ echo $active;} ?>">
-										<a href="#tab-login" data-toggle="tab">Login</a>
-									</li>
-									<li class="<?php if(isset($active)){ echo $active;} ?>">
-										<a href="#tab-registration" data-toggle="tab">Registration</a>
-									</li>
-								</ul>
-							</div>
+							
 							<div class="tab-content">
-								<div class="tab-pane fade in active<?php if(isset($active)){ echo $active;} ?>" id="tab-login">
-									<form class="appt-form">
-										
-										<input type="text" name="username" id="username" class="appt-form-txt" placeholder="User Name" />
-										<input type="password" name="password" id="password" class="appt-form-txt" placeholder="Password" />
-										<section class="color-7" id="btn-click">
-										<button class="icon-mail btn2-st2 btn-7 btn-7b">
-												Login
-										</button>
-										</section>
-									</form>
-								</div>
-								<div class="tab-pane fade in <?php if(isset($active)){ echo $active;} ?>" id="tab-registration">
-								  <?php
-									$attributes = array( 'class' => 'appt-form','id' => 'patients_registration','name' => 'patients_registration', 'autocomplete'=> 'off', 'class' => 'appt-form');
-									echo form_open('appointments/registration', $attributes);
+								<div class="tab-pane fade in active" id="tab-login">
+									 <?php
+									$attributes = array( 'class' => 'appt-form','id' => 'patients_book','name' => 'patients_book', 'autocomplete'=> 'off', 'class' => 'appt-form');
+									echo form_open('appointments/book_confirm', $attributes);
 									?>
 									<?php 
 										echo Template::message(); 
 									?>
-									<input type="hidden" value="<?php echo $appointment_time; ?>" name="apttime"  />
-									<input type="hidden" value="<?php echo $appointment_date; ?>" name="aptdate"  />
-									<input type="hidden" value="<?php echo $clinicid; ?>" name="clinicid"  />
-									<input type="hidden" value="<?php echo $doctorid; ?>" name="doctorid"  />
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left no-pad">
-									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-										<input type="text" name="first_name" class="appt-form-txt" placeholder="First Name"  value="<?php echo set_value('first_name', isset($patient['first_name']) ? $patient['first_name'] : ''); ?>" />
-										<span class='help-inline'><?php echo form_error('first_name'); ?></span>
-									</div>
-									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-										<input type="text" name="middle_name" class="appt-form-txt" placeholder="Middle Name" value="<?php echo set_value('middle_name', isset($patient['middle_name']) ? $patient['middle_name'] : ''); ?>" />
-										<span class='help-inline'><?php echo form_error('middle_name'); ?></span>
-									</div>
-									<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-										<input type="text" name="last_name" class="appt-form-txt" placeholder="Last Name"  value="<?php echo set_value('last_name', isset($patient['last_name']) ? $patient['last_name'] : ''); ?>" />
-										<span class='help-inline'><?php echo form_error('last_name'); ?></span>
-									</div>
-							   </div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left no-pad">
-								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-									<input type="password" name="password"  class="appt-form-txt" placeholder="Password" />
-									<span class='help-inline'><?php echo form_error('password'); ?></span>
-								</div>
-								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-									<input type="password" name="pass_confirm"  class="appt-form-txt" placeholder="Confirm Password"  />
-									<span class='help-inline'><?php echo form_error('pass_confirm'); ?></span>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-left no-pad">
-								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-									<input type="email" name="email" class="appt-form-txt" placeholder="Email"  value="<?php echo set_value('email', isset($patient['email']) ? $patient['email'] : ''); ?>" />
-									<span class='help-inline'><?php echo form_error('email'); ?></span>
-								</div>
-								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-									<input type="text" name="mobile" class="appt-form-txt" placeholder="Mobile"  value="<?php echo set_value('mobile', isset($patient['mobile']) ? $patient['mobile'] : ''); ?>"/>
-									<span class='help-inline'><?php echo form_error('mobile'); ?></span>
-								</div>
-							</div>
-							<section class="color-7" id="btn-click">
-								<button type="submit" class="icon-mail btn2-st2 btn-7 btn-7b iform-button" name="save">Register</button>
-							</section>
-							<?php echo form_close(); ?>
+										<span><div class="doc-name-class"><i class="fa fa-user-md"></i>
+										<?php echo $doctor_record[0]->first_name.' '.$doctor_record[0]->middle_name.' '.$doctor_record[0]->last_name; ?></div></span>
+										<span class="doc-title"><i class="fa fa-hospital-o">&nbsp;</i><?php echo $clinic[0]->name; ?> </span><br>
+										<span><i class="fa fa-calendar">&nbsp;</i><?php echo $appointment_date ?></span><br>
+										<span><i class="fa fa-clock-o">&nbsp;</i><?php echo $appointment_time ?></span>
+										<input type="hidden" name="doctorid" id="doctorid" value="<?php echo $doctorid; ?>" />
+										<input type="hidden" name="clinicid" id="clinicid" value="<?php echo $clinicid; ?>"/>
+										<input type="hidden" name="date" id="date" value="<?php echo $appointment_date; ?>" />
+										<input type="hidden" name="time" id="time" value="<?php echo $appointment_time; ?>" />
+										<section class="color-7" id="btn-click">
+										<button class="btn2-st2 btn-7 ">
+												<i class="fa fa-check-circle" style="font-size: 15px;">&nbsp;</i>Confirm
+										</button>
+										</section>
+								<?php echo form_close(); ?>
 								</div>
 							</div>
 						</div>

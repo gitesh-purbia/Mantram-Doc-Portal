@@ -45,7 +45,7 @@ class Search extends Front_Controller
 			}
 			else
 		    {
-			    $all_specialities_doctors = $this->search_model->get_all_specialities_doctors();	
+			    $all_specialities_doctors = $this->search_model->get_all_specialities_doctors();
 			    $all_specialities_clinics = $this->search_model->get_all_specialities_clinic();	
 				$all_specialities_clinics_time = $this->search_model->get_clinic_time($all_specialities_doctors);
 		        Template::set('records',$all_specialities_doctors);
@@ -149,16 +149,22 @@ class Search extends Front_Controller
 	        $clinic_record = $this->search_model->get_doctor_clinics_data($doctor_id);
 	        $clinic_images_result = $this->search_model->get_doctor_clinic_images($doctor_id);
 			$clinic_time_arr = array();
+			$clinic_book_time_arr = array();
 			foreach($clinic_record as $clinic)
 			{
+				
 				$clinic_time = $this->search_model->get_clinic_time_by_clinicid($clinic->clinicid);
 				$clinic_time_sorted = $this->byDaySort($clinic_time);
 				$clinic_time_arr[$clinic->clinicid] = $clinic_time_sorted;
+				
+				$clinic_book_time = $this->search_model->get_clinic_book_time($clinic->clinicid);
+				$clinic_book_time_arr[$clinic->clinicid] = $clinic_book_time;
 			}
 			Template::set('doctor_record',$doctor_record);
 			Template::set('clinic_record',$clinic_record);
 			Template::set('clinic_images_result',$clinic_images_result);	        
 			Template::set('time_slots',$clinic_time_arr);
+			Template::set('book_time_slots',$clinic_book_time_arr);
 				        
 		}
 		else 

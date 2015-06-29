@@ -180,8 +180,8 @@
 											<tr>
 												<td  class="day_title">
 													<?php 
-													$slot_date = date('d-m-Y', mktime(0, 0, 0, date('m'), date('d') + $key, date('Y')));
-													if($slot_date == date('d-m-Y'))
+													$slot_date = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + $key, date('Y')));
+													if($slot_date == date('Y-m-d'))
 													{
 														echo '<div class="timingtable_today">Today</div>';
 													}
@@ -217,9 +217,28 @@
 														}
 														$counter = $counter +1;
 												 	}
-													foreach($timeslots as $timing) { ?>
-														<a href="<?php echo site_url('appointments/book/').'?timeslots='.$timing.'&clinicid='.$clinic->clinicid.'&doctor_id='.$doctor_record[0]->doctorid.'&date='.$slot_date;?>"><?php echo $timing ?></a>
-													<?php } ?>
+													foreach($timeslots as $timing) 
+													{ ?> 
+														<?php
+															//var_dump(in_array_r($timing,$book_time_slots[$slot->clinic_id]));
+															if(in_array_r($timing,$book_time_slots[$slot->clinic_id]))
+															{
+																foreach($book_time_slots[$slot->clinic_id] as $booked)
+																{
+																	if($booked->date == $slot_date && $booked->time == $timing)
+																	{?>
+																		<span class="booked"><strike><?php echo $timing ?></strike></span>
+																	<?php }
+																}
+															}
+															else
+																{
+															if(!$this->auth->is_logged_in()){?>
+															<a href="javascript:void(0);" id="login_registration_<?php echo $timing; ?>"><?php echo $timing ?></a>
+															<?php } else { ?>
+															<a href="<?php echo site_url('appointments/book').'?timeslots='.$timing.'&date='.$slot_date.'&doctor_id='.$doctor_record[0]->doctorid.'&clinicid='.$slot->clinic_id; ?>"><?php echo $timing ?></a>
+														<?php } } 
+													 } ?>
 											   </td>
 										   </tr>
 										   <?php
@@ -239,13 +258,219 @@
                </div>
              </div>
            </div>
-      </div>
+ 	</div>
+ 	<div class="modal fade my-modal" id="mymodel" class="mymodel" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header appointment-form-title">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<i class="icon-hospital2 appointment-form-icon"></i>Book An Appointment
+			</div>
+			<div class="modal-body" style=" height: auto;">
+				<div class="row">
+					<div class="col-lg-12">
+						<fieldset class="">
+							<?php echo Template::message(); ?>
+							<div class="alert alert-success" id="sucess_message" style="display: none;"> Your registration have been done successfully, Please check your email for verify your account</div>
+						<div class="appointment-form col-xs-12 col-sm-12 col-md-12 col-lg-12 no-pad wow" id="appointments" data-wow-delay="1s" data-wow-offset="200">
+							<div class="content-tabs">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a href="#tab-login" data-toggle="tab">Login</a>
+									</li>
+									<li >
+										<a href="#tab-registration" data-toggle="tab">Registration</a>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-content">
+								<div class="tab-pane fade in active" id="tab-login">
+									<?php
+									$attributes = array( 'class' => 'appt-form','id' => 'patients_login','name' => 'patients_login', 'autocomplete'=> 'off', 'class' => 'appt-form');
+									echo form_open('appointments/login', $attributes);
+									?>
+									<?php 
+										echo Template::message(); 
+									?>
+									<div class="form-group">
+										<div class="row custom-form">
+											<div class="col-md-4">
+												<label for="username">User Name*</label>
+											</div>
+										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="username">
+											<input type="text" name="username" id="username" class="appt-form-txt" placeholder="User Name"  value="" />
+										</div>
+										</div>
+										<div class="row custom-form">
+											<div class="col-md-4">
+												<label for="username">Password*</label>
+											</div>
+										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="password">
+											<input type="password" name="passwords" id="password" class="appt-form-txt" placeholder="Password"  value="" />
+										</div>
+										</div>
+									</div>
+										<section class="color-7" id="btn-click">
+											<button type="submit" class="icon-mail btn2-st2 btn-7 btn-7b iform-button" name="save">Login</button>
+										</section>
+									<?php echo form_close(); ?>
+								</div>
+								<div class="tab-pane fade" id="tab-registration">
+								  <?php
+									$attributes = array( 'class' => 'appt-form','id' => 'patients_registration','name' => 'patients_registration', 'autocomplete'=> 'off', 'class' => 'appt-form');
+									echo form_open('appointments/book', $attributes);
+									?>
+									<?php 
+										echo Template::message(); 
+									?>
+									<div class="form-group">
+										<div class="row custom-form">
+											<div class="col-md-4">
+												<label for="first_name">First Name*</label>
+											</div>
+										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="first_name">
+											<input type="text" name="first_name" id="first_name" class="appt-form-txt" placeholder="First Name"  value="<?php echo set_value('first_name', isset($patient['first_name']) ? $patient['first_name'] : ''); ?>" />
+										</div>
+										</div>
+										<div class="row custom-form">
+											<div class="col-md-4">
+												<label for="middle_name">Middle Name</label>
+											</div>
+										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="middle_name">
+											<input type="text" name="middle_name" id="middle_name" class="appt-form-txt" placeholder="Middle Name" value="<?php echo set_value('middle_name', isset($patient['middle_name']) ? $patient['middle_name'] : ''); ?>" />
+										</div>
+										</div>
+										<div class="row custom-form">
+											<div class="col-md-4">
+												<label for="last_name">Last Name*</label>
+											</div>
+										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="last_name">
+											<input type="text" name="last_name" id="last_name" class="appt-form-txt" placeholder="Last Name"  value="<?php echo set_value('last_name', isset($patient['last_name']) ? $patient['last_name'] : ''); ?>" />
+										</div>
+										</div>
+										<div class="row custom-form">
+												<div class="col-md-4">
+													<label for="password">Password*</label>
+												</div>
+											<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="passwords">
+												<input type="password" name="password" id="password"  class="appt-form-txt" placeholder="Password" />
+											</div>
+										</div>
+										<div class="row custom-form">
+												<div class="col-md-4">
+													<label for="pass_confirm">Password Confirm*</label>
+												</div>
+												<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="pass_confirm">
+													<input type="password" name="pass_confirm" id="pass_confirm" class="appt-form-txt" placeholder="Confirm Password"  />
+												</div>
+										</div>
+										<div class="row custom-form">
+												<div class="col-md-4">
+													<label for="email">Email*</label>
+												</div>
+												<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="email">
+													<input type="email" name="email" id="email" class="appt-form-txt" placeholder="Email"  value="<?php echo set_value('email', isset($patient['email']) ? $patient['email'] : ''); ?>" />
+												</div>
+										</div>
+										<div class="row custom-form">
+												<div class="col-md-4">
+													<label for="mobile">Mobile*</label>
+												</div>
+												<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="mobile">
+													<input type="text" name="mobile" id="mobile" class="appt-form-txt" placeholder="Mobile"  value="<?php echo set_value('mobile', isset($patient['mobile']) ? $patient['mobile'] : ''); ?>"/>
+												</div>
+										</div>
+									</div>
+							<section class="color-7" id="btn-click">
+								<button type="submit" class="icon-mail btn2-st2 btn-7 btn-7b iform-button" name="save">Register</button>
+							</section>
+							<?php echo form_close(); ?>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	function in_array_r($needle, $haystack) 
+	{
+	    foreach ($haystack as $item) 
+	    {
+			if($item->time == $needle){
+	        	return true;
+				break;
+			}
+	    }
+		return false;
+    }
+?>
  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script>
   	function fancy()
   	{
   		$(".fancybox").fancybox();
+  		$('[id^=login_registration]').click(function (){
+  			$('#mymodel').modal('show');
+       });
+       //---------------------------registration------------------------------------------------
+       $("#patients_registration").on('submit',function(e){
+			e.preventDefault();	
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: $(this).attr('action'),
+	            data: $(this).serialize(),
+	            success:function(data)
+	            {
+	            	if(data.status)
+	            	{
+	            		$('#appointments').hide();
+	            		$('#sucess_message').show();
+	            	}
+	            	else
+	            	{
+	            		$.each(data, function(key, data) {
+	            			if(key != 'status')
+	            			{
+	            				var span = "<span class='help-inline'>"+ data +"</span>";
+			     				$("#"+key).find('span').remove();
+			     				$("#"+key).append(span);
+	            			}
+						});
+	            	}
+                  },
+                failure:function()
+                {
+                	alert(data);
+                }             
+	        });
+	    });
+       //---------------------------login------------------------------------------------
+       $("#patients_login").on('submit',function(e){
+			e.preventDefault();	
+			$.ajax({
+	            type: "POST",
+	            dataType: "json",
+	            url: $(this).attr('action'),
+	            data: $(this).serialize(),
+	            success:function(data)
+	            {
+	            	 if(data.success == true){ 
+				      
+				       $('#mymodel').model('hide');
+				      }
+                 },
+                             
+	        });
+	    });
   	}
   </script>    
   <?php Assets::add_js('fancy()', "inline");  ?>

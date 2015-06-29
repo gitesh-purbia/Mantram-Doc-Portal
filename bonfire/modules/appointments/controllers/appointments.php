@@ -16,20 +16,51 @@ class Appointments extends Front_Controller
 
 	public function book()
 	{
-		$appointment_time = $_GET['timeslots'];
-		$appointment_date = $_GET['date'];
-		$clinic_id = $_GET['clinicid'];
-		$doctor_id = $_GET['doctor_id'];
-		 if(isset($_GET['class']))
-		 {
-		 	$class=$_GET['class'];
-			Template::set('active',$class);
-		 }
-		
-		if(isset($appointment_time) && isset($appointment_date) && isset($clinic_id) && isset($doctor_id))
+		$appointment_time = isset($_GET['timeslots'])?$_GET['timeslots']:'';
+		$appointment_date = isset($_GET['date'])?$_GET['date']:'';
+		$clinic_id = isset($_GET['clinicid'])?$_GET['clinicid']:'';
+		$doctor_id = isset($_GET['doctor_id'])?$_GET['doctor_id']:'';
+		if(!empty($_POST))
 		{
-			$doctor_record=$this->appointments_model->get_doctor_info($doctor_id);
-			$clinic_info=$this->appointments_model->get_clinic_details($clinic_id);
+			$this->form_validation->set_rules($this->get_validation_rules('add'));
+			if ($this->form_validation->run($this))
+			{
+				if ($email_data = $this->patients_model->register($_POST))
+				{
+					//$this->sendRegistrationEmail($email_data);
+					$data = array(
+								'status'	=> true,
+							);
+					echo json_encode($data);
+					Template::render('ajax');
+				}
+				else
+				{
+					Template::set_message('Error in Registration.', 'alert alert-danger alert-dismissabl');
+					redirect('appointments/book');
+				}
+			}
+			else
+			{
+				$data = array(
+								'status'		=> FALSE,
+								'first_name'	=> form_error('first_name'),
+								'middle_name' 	=> form_error('middle_name'),
+								'last_name' 	=> form_error('last_name'),
+								'email'			=> form_error('email'),
+								'mobile'		=> form_error('mobile'),
+								'passwords'		=> form_error('password'),
+								'pass_confirm'	=> form_error('pass_confirm')
+							);
+				echo json_encode($data);
+				Template::render('ajax');
+			}
+		}
+		
+		if($appointment_time && $appointment_date && $clinic_id && $doctor_id)
+		{
+			$doctor_record	=	$this->appointments_model->get_doctor_info($doctor_id);
+			$clinic_info	=	$this->appointments_model->get_clinic_details($clinic_id);
 			Template::set('doctor_record',$doctor_record);
 			Template::set('clinic',$clinic_info);
 			Template::set('appointment_date',$appointment_date);
@@ -38,108 +69,98 @@ class Appointments extends Front_Controller
 			Template::set('doctorid',$doctor_id);
 		}
 		else
-		 {
-		  	redirect('home/');	
+		{
+			redirect('home/');	
 		}
+
 		Template::render();
 	}
 	
 	//--------------------------------------------------------------------
-
-    public function registration()
-    {
-    	if (!empty($_POST))
+	public function book_confirm()
+	{
+		if(!empty($_POST))
 		{
-			$apttime=$this->input->post('apttime');
-			$aptdate=$this->input->post('aptdate');
-			$clinicid=$this->input->post('clinicid');
-			$doctorid=$this->input->post('doctorid');
-			$this->form_validation->set_rules($this->get_validation_rules('add'));
-			if ($this->form_validation->run($this))
+			$patient_id = $this->current_user->id; 
+			if($this->appointments_model->insert($_POST,$patient_id))
 			{
-				if ($email_data = $this->patients_model->register($_POST))
-				{
-					$this->sendRegistrationEmail($email_data);
-					Template::set_message('Your registration have been done successfully, Please check your email for verify your account.', 'success');
-					Template::redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
-				}
-				else
-				{
-					Template::set_message('Error in Registration.', 'alert alert-danger alert-dismissabl');
-					Template::redirect('appointments/book'.'?timeslots='.$apttime.'&clinicid='.$clinicid.'&doctor_id='.$doctorid.'&date='.$aptdate.'&class=active');
-				}
+				$this->session->set_flashdata('msg', 'Your Appointment is Successfully Book');
+				redirect('home/');
+				Template::render();
 			}
-			else
-			{
-				Template::set_message('Error in Registration.', 'alert alert-danger alert-dismissabl');
-				Template::redirect('appointments/book'.'?timeslots='.$apttime.'&'.'clinicid='.$clinicid.'&'.'doctor_id='.$doctorid.'&'.'date='.$aptdate.'&class=active');
-			}
+			
 		}
-		
-    	Template::render();
-    }
-	
+	}
+	//--------------------------------------------------------------------
+	public function login()
+	{
+		if(!empty($_POST))
+		{
+			$username = $this->input->post('username');
+			$password = $this->input->post('passwords');
+			var_dump($this->auth->login($username, $password));
+		}
+					
+	}
 	//--------------------------------------------------------------------
 	
 	private function get_validation_rules($group)
+	{
+		$validationRules = array();
+		switch ($group)
 		{
-			$validationRules = array();
-	
-			switch ($group)
-			{
-				case 'add':
+			case 'add':
+				$validationRules = array(
+					array(
+					'field' => 'first_name',
+					'label' => 'First name',
+					'rules' => 'trim|required|max_length[100]|xss_clean'
+					),
+					array(
+					'field' => 'middle_name',
+					'label' => 'Middle name',
+					'rules' => 'trim|max_length[100]|xss_clean'
+					),
+					array(
+					'field' => 'last_name',
+					'label' => 'Last name',
+					'rules' => 'trim|required|max_length[100]|xss_clean'
+					),
+					array(
+					'field' => 'email',
+					'label' => 'Email',
+					'rules' => 'trim|required|unique[users.email]|valid_email|max_length[50]|xss_clean'
+					),
+					array(
+					'field' => 'mobile',
+					'label' => 'Mobile',
+					'rules' => 'trim|is_numeric|required|max_length[10]|xss_clean'
+					),
+					array(
+					'field' => 'password',
+					'label' => 'Password',
+					'rules' => 'trim|required|strip_tags|min_length[8]|xss_clean'
+					),
+					array(
+					'field' => 'pass_confirm',
+					'label' => 'Confirm Password',
+					'rules' => 'trim|required|strip_tags|min_length[8]|matches[password]|xss_clean'
+					),
+				);
+				break;
+
+				case 'edit':
 					$validationRules = array(
-						array(
-						'field' => 'first_name',
-						'label' => 'First name',
-						'rules' => 'trim|required|max_length[100]|xss_clean'
-						),
-						array(
-						'field' => 'middle_name',
-						'label' => 'Middle name',
-						'rules' => 'trim|max_length[100]|xss_clean'
-						),
-						array(
-						'field' => 'last_name',
-						'label' => 'Last name',
-						'rules' => 'trim|required|max_length[100]|xss_clean'
-						),
-						array(
-						'field' => 'mobile',
-						'label' => 'Mobile',
-						'rules' => 'trim|required|max_length[10]|xss_clean'
-						),
-						array(
-						'field' => 'password',
-						'label' => 'Password',
-						'rules' => 'trim|required|strip_tags|min_length[8]|xss_clean'
-						),
-						array(
-						'field' => 'pass_confirm',
-						'label' => 'Confirm Password',
-						'rules' => 'trim|required|strip_tags|min_length[8]|matches[password]|xss_clean'
-						),
-						array(
-						'field' => 'email',
-						'label' => 'Email',
-						'rules' => 'trim|required|unique[users.email]|valid_email|max_length[50]|xss_clean'
-						),
-					);
-					break;
-	
-					case 'edit':
-						$validationRules = array(
-						array(
-						'field' => 'name',
-						'label' => 'Speciality',
-						'rules' => 'trim|required|callback_checkname|max_length[100]|xss_clean'
-						),
-					);
-					break;
-			}
-	
-			return $validationRules;
+					array(
+					'field' => 'name',
+					'label' => 'Speciality',
+					'rules' => 'trim|required|callback_checkname|max_length[100]|xss_clean'
+					),
+				);
+				break;
 		}
+		return $validationRules;
+	}
 	
 	//--------------------------------------------------------------------
 	
@@ -153,9 +174,10 @@ class Appointments extends Front_Controller
 		$this->email->subject('Confirm your registration');
 		
 		$email_message_data = array(
-            'title' => $this->settings_lib->item('site.title'),
-            'data'  => $userdata
-        );
+			'title' => $this->settings_lib->item('site.title'),
+			'data'  => $userdata,
+			'url'  	=> site_url('patients/verification')
+			);
 							
 		$message = $this->load->view('_emails/registration', $email_message_data, TRUE);
 		echo $message; die();
@@ -170,11 +192,11 @@ class Appointments extends Front_Controller
 	{
 		$baseurl =$this->config->item('sms_api_baseurl');
 
-        $url = "".$baseurl."/api/sendmsg.php?user=".$this->config->item('sms_api_user')."&pass=".$this->config->item('sms_api_password')."&sender=".$this->config->item('sms_api_sender')."&phone=".$mobile_no."&text=".urlencode('Your verification code is '.$verification_code)."&priority=ndnd&stype=normal";
+		$url = "".$baseurl."/api/sendmsg.php?user=".$this->config->item('sms_api_user')."&pass=".$this->config->item('sms_api_password')."&sender=".$this->config->item('sms_api_sender')."&phone=".$mobile_no."&text=".urlencode('Your verification code is '.$verification_code)."&priority=ndnd&stype=normal";
 		
 		try
 		{
-	        $ret = file_get_contents($url);
+			$ret = file_get_contents($url);
 		}
 		catch (Exception $e)
 		{
@@ -191,7 +213,7 @@ class Appointments extends Front_Controller
 		{
 			$this->session->set_userdata('user_hash', $hash);
 			
-	    	$records = $this->patients_model->find_by('hash', $hash);
+			$records = $this->patients_model->find_by('hash', $hash);
 			if($records)
 			{
 				$patients_record = $this->patients_model->find($records->id);
@@ -257,13 +279,13 @@ class Appointments extends Front_Controller
 				Template::set_message('Error in Verification' , 'alert alert-danger alert-dismissabl');
 			}
 			Template::set('resend_url',SITE_URL().'patients/verification/'.$hash.'/true');
-	    	Template::render();
+			Template::render();
 		}
 		else
 		{
 			redirect('home');
 		}
-    }
+	}
 
 	//--------------------------------------------------------------------
 	
@@ -301,7 +323,7 @@ class Appointments extends Front_Controller
 				Template::set('id',$this->input->post('id'));
 			}
 		}
-		else {
+		else{
 				if($this->session->userdata('user_hash'))
 				{
 					$hash = $this->session->userdata('user_hash');
@@ -338,14 +360,12 @@ class Appointments extends Front_Controller
 	
 	function generateRandomStringForMobile($length = 4) 
 	{
-	    $characters = '0123456789';
-	    $charactersLength = strlen($characters);
-	    $randomString = '';
-	    for ($i = 0; $i < $length; $i++) {
-	        $randomString .= $characters[rand(0, $charactersLength - 1)];
-	    }
-	    return $randomString;
+		$characters = '0123456789';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
 	}
-	
-	
 }

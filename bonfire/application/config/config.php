@@ -21,7 +21,7 @@ $config['modules_locations'] = array(
 |
 */
 $config['base_url']	= '';
-$config['backend_url']	= 'http://localhost/ilaaj/';
+$config['backend_url']	= 'http://localhost/Ilaaj/';
 $config['sms_api_baseurl']	= 'http://text.skyhitech.com';
 $config['sms_api_user']	= 'fun2elearn';
 $config['sms_api_password']	= '12345';
