@@ -658,7 +658,6 @@
 	var clinic = this.value;
 	var url = 'http://localhost/ilaaj_front/search/clinic/'+clinic;
 	$("#search_box").attr("action", url);
-
 	});
 
 	$("#clinics").autocomplete({

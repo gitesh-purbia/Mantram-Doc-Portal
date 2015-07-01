@@ -98,7 +98,23 @@ class Appointments extends Front_Controller
 		{
 			$username = $this->input->post('username');
 			$password = $this->input->post('passwords');
-			var_dump($this->auth->login($username, $password));
+			$check=$this->auth->login($username, $password);
+			if($check)
+			{
+				$data = array(
+								'status'	=> true,
+							);
+					echo json_encode($data);
+					Template::render('ajax');
+			}
+			else
+			 {
+			 	$data = array(
+								'status'	=> FALSE,
+							);
+					echo json_encode($data);
+					Template::render('ajax');
+			}
 		}
 					
 	}

@@ -270,7 +270,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<fieldset class="">
-							<?php echo Template::message(); ?>
+							
 							<div class="alert alert-success" id="sucess_message" style="display: none;"> Your registration have been done successfully, Please check your email for verify your account</div>
 						<div class="appointment-form col-xs-12 col-sm-12 col-md-12 col-lg-12 no-pad wow" id="appointments" data-wow-delay="1s" data-wow-offset="200">
 							<div class="content-tabs">
@@ -285,6 +285,7 @@
 							</div>
 							<div class="tab-content">
 								<div class="tab-pane fade in active" id="tab-login">
+									
 									<?php
 									$attributes = array( 'class' => 'appt-form','id' => 'patients_login','name' => 'patients_login', 'autocomplete'=> 'off', 'class' => 'appt-form');
 									echo form_open('appointments/login', $attributes);
@@ -292,7 +293,9 @@
 									<?php 
 										echo Template::message(); 
 									?>
-									<div class="form-group">
+									<div class="form-group" id="login-message">
+									</div>
+									<div class="form-group" id="login_contener">
 										<div class="row custom-form">
 											<div class="col-md-4">
 												<label for="username">User Name*</label>
@@ -463,10 +466,20 @@
 	            data: $(this).serialize(),
 	            success:function(data)
 	            {
-	            	 if(data.success == true){ 
-				      
-				       $('#mymodel').model('hide');
-				      }
+	            	if(data.status == true)
+	            	{
+	            		var data = 'You Have Login Successfully.Now You Can Book Your Appointment';
+	            		var div = "<div class='alert alert-success'>"+data+"</div>";
+	            		$('#login_contener').hide(1000);
+	            		$('#login-message').append(div);
+	            		 setTimeout(function(){
+			                         window.location = '<?php echo current_url();?>';
+			                    }, 4000); 
+	            	}
+	            	else
+	            	{
+	            		
+	            	}
                  },
                              
 	        });
